@@ -21,10 +21,16 @@ class SSHConnection:
 
     def init(self):
         # create the SSH Connection
-        conn = Connection(
-            f"{self.username}@{self.host}:{self.port}",
-            connect_kwargs={"password": self.password, "key_filename": self.keyfilename, "allow_agent": False},
-        )
+        if self.keyfilename == '' or self.keyfilename == None:
+            conn = Connection(
+                f"{self.username}@{self.host}:{self.port}",
+                connect_kwargs={"password": self.password, "look_for_keys": False, "allow_agent": False},
+            )
+        else:
+            conn = Connection(
+                f"{self.username}@{self.host}:{self.port}",
+                connect_kwargs={"password": self.password, "key_filename": self.keyfilename, "look_for_keys": False, "allow_agent": False},
+            )
         self._conn = conn
         self._conn.open()
 
